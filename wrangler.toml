@@ -1,5 +1,5 @@
-compatibility_date = "2022-02-21"
-name = "my-worker-dev"
+compatibility_date = "2024-03-2128"
+name = "pikud-haoref-api-graphql"
 account_id = ""
 workers_dev = true
 main = "src/index.ts"
