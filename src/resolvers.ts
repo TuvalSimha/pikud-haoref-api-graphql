@@ -18,14 +18,14 @@ export const resolvers: Resolvers = {
       if (args.orderBy === OrderBy.CreatedAtAsc) {
         const sorted = alerts.sort(
           (a, b) =>
-            new Date(a.alertDate).getTime() - new Date(b.alertDate).getTime()
+            new Date(a.alertDate).getTime() - new Date(b.alertDate).getTime(),
         );
         return sorted;
       }
       if (args.orderBy === OrderBy.CreatedAtDesc) {
         const sorted = alerts.sort(
           (a, b) =>
-            new Date(b.alertDate).getTime() - new Date(a.alertDate).getTime()
+            new Date(b.alertDate).getTime() - new Date(a.alertDate).getTime(),
         );
         return sorted;
       }

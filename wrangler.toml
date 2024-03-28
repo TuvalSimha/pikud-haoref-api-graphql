@@ -5,6 +5,3 @@ workers_dev = true
 main = "src/index.ts"
 compatibility_flags = ["streams_enable_constructors"]
 node_compat = true
-
-
-

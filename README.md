@@ -10,7 +10,6 @@ Fully-featured GraphQL Server with focus on easy setup, performance & great deve
 - **WHATWG Fetch API:** the core package depends on [WHATWG Fetch API](https://fetch.spec.whatwg.org/) so it can run and deploy on any environment (Serverless, Workers, Deno, Node).
 - **Easily Extendable:** New GraphQL-Yoga support all [`envelop`](https://www.envelop.dev) plugins.
 
-
 <br />
 
 [**See it in action!**](https://my-yoga-worker.cpolyeng.workers.dev)
@@ -21,17 +20,15 @@ Fully-featured GraphQL Server with focus on easy setup, performance & great deve
 
 [Read the docs](https://www.graphql-yoga.com/docs/quick-start)
 
-
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/the-guild-org/yoga-cloudflare-workers-template)
 
 <p>&nbsp;</p>
 
-----
+---
 
 <p>&nbsp;</p>
 
 ## Getting started
-
 
 1. Install and configure wrangler
 
@@ -41,13 +38,11 @@ npm i @cloudflare/wrangler -g
 wrangler login
 ```
 
-
 2. Create a new project with the GraphQL Yoga template
 
 ```sh
  wrangler generate graphql-yoga-worker https://github.com/the-guild-org/yoga-cloudflare-workers-template
 ```
-
 
 3. Build and deploy your CF Worker GraphQL API
 
@@ -59,7 +54,7 @@ wrangler publish
 
 <p>&nbsp;</p>
 
-----
+---
 
 <p>&nbsp;</p>
 
@@ -68,11 +63,11 @@ wrangler publish
 ### Yoga configuration
 
 GraphQL Yoga comes with defaults for CORS and error handling:
+
 - CORS are enabled by default
 - Automatically masking unexpected errors and preventing sensitive information leaking to clients.
 
 Yoga also brings support (with no additional dependency) for subscriptions, file uploads and your favourite schema building library (GraphQL Tools, Pothos, Nexus, TypeGraphQL, SDL first schema-design approaches, graphql-js, Apollo Tools).
-
 
 More information on all available features [on the official documentation](https://www.graphql-yoga.com/docs/quick-start).
 
@@ -86,6 +81,7 @@ GraphQL Yoga is built on top of [Envelop](https://www.envelop.dev/).
 Similar to Express middlewares allowing you to customize requests' behavior, Envelop applies the same idea to GraphQL requests.
 
 By exposing hooks in all the phases of a GraphQL Request execution, Envelop enables the creation of plugins that simplify the setup of standard API features such as:
+
 - Security: Depth limits, Rate limiting
 - Authentication
 - Advanced caching
@@ -95,7 +91,6 @@ By exposing hooks in all the phases of a GraphQL Request execution, Envelop enab
 - Tracing: NewRelic, Datadog, StatsD, Apollo Tracing
 
 More information on [Envelop documentation](https://www.envelop.dev/docs).
-
 
 _Note: Some Node.js specific plugins such as `useSentry()` are supported in Serverless environments_
 
@@ -107,19 +102,15 @@ GraphQL Yoga is relying on `fetch()` WHATWG Fetch API, allowing you to [leverage
 
 For more advanced use-cases, please refer to the `useResponseCache()` Envelop plugins, with a Redis cache (memory cache is not supported on Serverless).
 
-
 <p>&nbsp;</p>
 
 ### Bundle size
 
 **GraphQL Yoga bundle is 36% lighter than Apollo Cloudflare Server** (_Wrangler bundled script comparison_), leading is a faster startup and deployment time. ⚡️
 
-
-
-
 <p>&nbsp;</p>
 
-----
+---
 
 <p>&nbsp;</p>
 
@@ -128,14 +119,11 @@ For more advanced use-cases, please refer to the `useResponseCache()` Envelop pl
 - [GraphQL Yoga features documentation](https://www.graphql-yoga.com/docs/quick-start)
 - [GraphQL Yoga on Cloudflare Workers](https://www.graphql-yoga.com/docs/integrations/integration-with-cloudflare-workers)
 
-
-
 <p>&nbsp;</p>
 
-----
+---
 
 <p>&nbsp;</p>
-
 
 ## License
 
