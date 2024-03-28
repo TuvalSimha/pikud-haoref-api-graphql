@@ -1,11 +1,30 @@
 import { createYoga, createSchema } from "graphql-yoga";
 import { resolvers } from "./resolvers";
-import { readFileSync } from "node:fs";
-
-const typeDefs = readFileSync("./src/schema.graphql", "utf8");
 
 const schema = createSchema({
-  typeDefs,
+  typeDefs: /* GraphQL */ `
+    type Query {
+      allAlertsFromToday(orderBy: OrderBy!): [Alert!]!
+      alerts(alertsInput: AlertsInput): [Alert!]!
+    }
+
+    type Alert {
+      date: String
+      title: String
+      location: String
+      category: Int
+    }
+
+    enum OrderBy {
+      CREATED_AT_DESC
+      CREATED_AT_ASC
+    }
+
+    input AlertsInput {
+      fromDateTime: String
+      toDateTime: String
+    }
+  `,
   resolvers,
 });
 
