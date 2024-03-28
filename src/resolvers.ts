@@ -1,16 +1,12 @@
-import { makeExecutableSchema } from "@graphql-tools/schema";
 import { alertsFromToday } from "./utils/alrets-from-today";
-import { readFileSync } from "node:fs";
 import {
   Alert,
   OrderBy,
   Resolvers,
   QueryAllAlertsFromTodayArgs,
-} from "./resolvers-types";
+} from "../src/resolvers-types";
 
-const typeDefs = readFileSync("./src/schema.graphql", "utf8");
-
-const resolvers: Resolvers = {
+export const resolvers: Resolvers = {
   Query: {
     allAlertsFromToday: async (_: any, args: QueryAllAlertsFromTodayArgs) => {
       const alerts = (await alertsFromToday()) as Alert[];
@@ -44,8 +40,3 @@ const resolvers: Resolvers = {
     category: (alert: any) => alert.category,
   },
 };
-
-export const schema = makeExecutableSchema({
-  resolvers: [resolvers],
-  typeDefs: [typeDefs],
-});
