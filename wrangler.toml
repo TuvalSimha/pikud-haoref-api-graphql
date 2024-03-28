@@ -1,7 +1,6 @@
-compatibility_date = "2024-03-2128"
+compatibility_date = "2024-03-28"
 name = "pikud-haoref-api-graphql"
 account_id = ""
 workers_dev = true
 main = "src/index.ts"
-compatibility_flags = ["streams_enable_constructors"]
 node_compat = true
