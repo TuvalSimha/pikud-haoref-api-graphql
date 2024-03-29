@@ -3,8 +3,13 @@ import { resolvers } from "./resolvers";
 
 const schema = createSchema({
   typeDefs: /* GraphQL */ `
+    scalar DateTime
+
     type Query {
       allAlertsFromToday(orderBy: OrderBy!): [Alert!]!
+      allAlertsFromLastWeek(orderBy: OrderBy!): [Alert!]!
+      allAlertsFromLastMonth(orderBy: OrderBy!): [Alert!]!
+      allAlertsByDateRange(dates: AlertsInput!): [Alert!]!
       alerts(alertsInput: AlertsInput): [Alert!]!
     }
 
@@ -21,8 +26,8 @@ const schema = createSchema({
     }
 
     input AlertsInput {
-      fromDateTime: String
-      toDateTime: String
+      fromDateTime: DateTime
+      toDateTime: DateTime
     }
   `,
   resolvers,
