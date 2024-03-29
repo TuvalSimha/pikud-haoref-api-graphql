@@ -67,4 +67,10 @@ query AllAlertsByDateRange($fromDateTime: DateTime, $toDateTime: DateTime) {
 ## Contributing
 This repository is open-source, and contributions are welcome! If you'd like to contribute, please fork the repository, make your changes, and submit a pull request. Appreciate your help in improving this project!
 
+If you find this project helpful and would like to support its development, consider buying me a coffee:
+
+<a href="https://www.buymeacoffee.com/tuvalsimha" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+
+
+
 
