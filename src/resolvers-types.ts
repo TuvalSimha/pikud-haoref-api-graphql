@@ -1,4 +1,8 @@
-import { GraphQLResolveInfo } from "graphql";
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -29,6 +33,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  DateTime: { input: any; output: any };
 };
 
 export type Alert = {
@@ -41,8 +46,8 @@ export type Alert = {
 };
 
 export type AlertsInput = {
-  fromDateTime?: InputMaybe<Scalars["String"]["input"]>;
-  toDateTime?: InputMaybe<Scalars["String"]["input"]>;
+  fromDateTime?: InputMaybe<Scalars["DateTime"]["input"]>;
+  toDateTime?: InputMaybe<Scalars["DateTime"]["input"]>;
 };
 
 export enum OrderBy {
@@ -53,11 +58,26 @@ export enum OrderBy {
 export type Query = {
   __typename?: "Query";
   alerts: Array<Alert>;
+  allAlertsByDateRange: Array<Alert>;
+  allAlertsFromLastMonth: Array<Alert>;
+  allAlertsFromLastWeek: Array<Alert>;
   allAlertsFromToday: Array<Alert>;
 };
 
 export type QueryAlertsArgs = {
   alertsInput?: InputMaybe<AlertsInput>;
+};
+
+export type QueryAllAlertsByDateRangeArgs = {
+  dates: AlertsInput;
+};
+
+export type QueryAllAlertsFromLastMonthArgs = {
+  orderBy: OrderBy;
+};
+
+export type QueryAllAlertsFromLastWeekArgs = {
+  orderBy: OrderBy;
 };
 
 export type QueryAllAlertsFromTodayArgs = {
@@ -174,6 +194,7 @@ export type ResolversTypes = {
   Alert: ResolverTypeWrapper<Alert>;
   AlertsInput: AlertsInput;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
+  DateTime: ResolverTypeWrapper<Scalars["DateTime"]["output"]>;
   Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
   OrderBy: OrderBy;
   Query: ResolverTypeWrapper<{}>;
@@ -185,6 +206,7 @@ export type ResolversParentTypes = {
   Alert: Alert;
   AlertsInput: AlertsInput;
   Boolean: Scalars["Boolean"]["output"];
+  DateTime: Scalars["DateTime"]["output"];
   Int: Scalars["Int"]["output"];
   Query: {};
   String: Scalars["String"]["output"];
@@ -202,6 +224,11 @@ export type AlertResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DateTime"], any> {
+  name: "DateTime";
+}
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends
@@ -213,6 +240,24 @@ export type QueryResolvers<
     ContextType,
     Partial<QueryAlertsArgs>
   >;
+  allAlertsByDateRange?: Resolver<
+    Array<ResolversTypes["Alert"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAllAlertsByDateRangeArgs, "dates">
+  >;
+  allAlertsFromLastMonth?: Resolver<
+    Array<ResolversTypes["Alert"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAllAlertsFromLastMonthArgs, "orderBy">
+  >;
+  allAlertsFromLastWeek?: Resolver<
+    Array<ResolversTypes["Alert"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryAllAlertsFromLastWeekArgs, "orderBy">
+  >;
   allAlertsFromToday?: Resolver<
     Array<ResolversTypes["Alert"]>,
     ParentType,
@@ -223,5 +268,6 @@ export type QueryResolvers<
 
 export type Resolvers<ContextType = any> = {
   Alert?: AlertResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
 };
