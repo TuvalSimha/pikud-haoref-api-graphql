@@ -1,4 +1,4 @@
-# Pikud Haoref GraphQL API
+# Pikud HaOref GraphQL API
 
 This GraphQL API provides access to alerts data related to Pikud HaOref red alerts history.
 
