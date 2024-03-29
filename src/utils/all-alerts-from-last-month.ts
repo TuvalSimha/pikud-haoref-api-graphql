@@ -1,3 +1,5 @@
+import { GraphQLError } from 'graphql';
+
 export async function allAlertsFromLastMonth() {
 	const url = 'https://www.oref.org.il/Shared/Ajax/GetAlarmsHistory.aspx?lang=he&mode=3';
 	const headers = {
@@ -7,15 +9,14 @@ export async function allAlertsFromLastMonth() {
 	try {
 		const response = await fetch(url, { headers });
 		if (!response.ok && response.status !== 200) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			return Promise.reject(new GraphQLError(`New GraphQL error: ${response.body}. Status: ${response.status}.`));
 		}
 		const data = await response.json();
 		if (!data) {
-			throw new Error('No data returned from the server');
+			return Promise.reject(new GraphQLError(`No data returned from the server.`));
 		}
 		return data;
 	} catch (error) {
-		console.error('Error fetching data:', error);
-		throw error;
+		return Promise.reject(new GraphQLError(`Catch error. Message: ${error}`));
 	}
 }

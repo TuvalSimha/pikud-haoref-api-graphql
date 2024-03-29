@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import { formatDate } from './format-date';
 
 type AllAlertsByDateRangeProps = {
@@ -20,15 +21,14 @@ export async function allAlertsByDateRange({ from, to }: AllAlertsByDateRangePro
 		const response = await fetch(url, { headers });
 		console.log('response', response);
 		if (!response.ok && response.status !== 200) {
-			throw new Error(`HTTP error! status: ${(response.status, response.body)} `);
+			return Promise.reject(new GraphQLError(`New GraphQL error: ${response.body}. Status: ${response.status}.`));
 		}
 		const data = await response.json();
 		if (!data) {
-			throw new Error('No data returned from the server');
+			return Promise.reject(new GraphQLError(`No data returned from the server.`));
 		}
 		return data;
 	} catch (error) {
-		console.error('Error fetching data:', error);
-		throw error;
+		return Promise.reject(new GraphQLError(`Catch error. Message: ${error}`));
 	}
 }
