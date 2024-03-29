@@ -2,6 +2,9 @@
 
 This GraphQL API provides access to alerts data related to Pikud HaOref red alerts history.
 
+![live](https://github.com/TuvalSimha/pikud-haoref-api-graphql/assets/37614975/01d09111-2ece-4116-9511-96627d4e0346)
+
+
 ## Usage
 You can interact with this API by sending GraphQL queries to the provided endpoint.
 
