@@ -35,7 +35,19 @@ const schema = createSchema({
 
 const yoga = createYoga({
   schema,
-  graphiql: true,
+  graphiql: {
+    defaultQuery: /* GraphQL */ `
+      query AllAlertsFromToday {
+        allAlertsFromToday(orderBy: CREATED_AT_DESC) {
+          category
+          date
+          location
+          title
+        }
+      }
+    `,
+  },
 });
+
 
 self.addEventListener("fetch", yoga);
