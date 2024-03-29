@@ -50,4 +50,8 @@ const yoga = createYoga({
 });
 
 
-self.addEventListener("fetch", yoga);
+export default {
+  async fetch(request: Request): Promise<Response> {
+    return yoga.fetch(request);
+  },
+};
