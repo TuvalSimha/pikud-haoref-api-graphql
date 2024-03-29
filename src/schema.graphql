@@ -1,26 +1,26 @@
 scalar DateTime
 
 type Query {
-  allAlertsFromToday(orderBy: OrderBy!): [Alert!]!
-  allAlertsFromLastWeek(orderBy: OrderBy!): [Alert!]!
-  allAlertsFromLastMonth(orderBy: OrderBy!): [Alert!]!
-  allAlertsByDateRange(dates: AlertsInput!): [Alert!]!
-  alerts(alertsInput: AlertsInput): [Alert!]!
+	allAlertsFromToday(orderBy: OrderBy!): [Alert!]!
+	allAlertsFromLastWeek(orderBy: OrderBy!): [Alert!]!
+	allAlertsFromLastMonth(orderBy: OrderBy!): [Alert!]!
+	allAlertsByDateRange(dates: AlertsInput!): [Alert!]!
+	alerts(alertsInput: AlertsInput): [Alert!]!
 }
 
 type Alert {
-  date: String
-  title: String
-  location: String
-  category: Int
+	date: String
+	title: String
+	location: String
+	category: Int
 }
 
 enum OrderBy {
-  CREATED_AT_DESC
-  CREATED_AT_ASC
+	CREATED_AT_DESC
+	CREATED_AT_ASC
 }
 
 input AlertsInput {
-  fromDateTime: DateTime
-  toDateTime: DateTime
+	fromDateTime: DateTime
+	toDateTime: DateTime
 }

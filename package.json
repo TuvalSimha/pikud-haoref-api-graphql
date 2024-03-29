@@ -1,34 +1,33 @@
 {
-  "name": "pikud-haoref-api-graphql",
-  "description": "Fully-featured, simple to set up, performant and extendable GraphQL server",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "wrangler dev",
-    "check": "tsc --pretty --noEmit",
-    "generate": "graphql-codegen",
-    "prettier": "prettier --cache --write --list-different --ignore-unknown \"**/*\""
-  },
-  "engines": {
-    "node": ">=16"
-  },
-  "dependencies": {
-    "@graphql-tools/schema": "10.0.3",
-    "graphql": "16.8.1",
-    "graphql-scalars": "1.23.0",
-    "graphql-yoga": "5.2.0"
-  },
-  "devDependencies": {
-    "@graphql-codegen/cli": "5.0.2",
-    "@graphql-codegen/typescript": "4.0.6",
-    "@graphql-codegen/typescript-resolvers": "4.0.6",
-    "@types/service-worker-mock": "2.0.4",
-    "cross-env": "7.0.3",
-    "prettier": "3.2.5",
-    "service-worker-mock": "2.0.5",
-    "ts-node": "10.9.2",
-    "ts-node-dev": "2.0.0",
-    "typescript": "5.4.3",
-    "wrangler": "3.41.0"
-  }
+	"name": "wispy-hat-3afb",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"test": "vitest",
+		"generate": "graphql-codegen",
+		"prettier": "prettier --cache --write --list-different --ignore-unknown \"**/*\""
+	},
+	"engines": {
+		"node": ">=16"
+	},
+	"dependencies": {
+		"@graphql-tools/schema": "10.0.3",
+		"graphql": "16.8.1",
+		"graphql-scalars": "1.23.0",
+		"graphql-yoga": "5.2.0"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.1.0",
+		"@cloudflare/workers-types": "^4.20240320.1",
+		"typescript": "^5.0.4",
+		"prettier": "3.2.5",
+		"vitest": "1.3.0",
+		"wrangler": "^3.0.0",
+		"@graphql-codegen/cli": "5.0.2",
+		"@graphql-codegen/typescript": "4.0.6",
+		"@graphql-codegen/typescript-resolvers": "4.0.6"
+	}
 }
