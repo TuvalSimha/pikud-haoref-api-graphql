@@ -10,63 +10,128 @@ You can interact with this API by sending GraphQL queries to the provided endpoi
 
 ## Endpoint
 
-Live Query URL: https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql
+Live Query URL: [https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql](https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql)
 
 ## Example Queries
 
 ### Get all alerts from today:
 
-```
+```graphql
 query AllAlertsFromToday {
-    allAlertsFromToday(orderBy: CREATED_AT_DESC) {
-        category
-        date
-        location
-        title
+    allAlertsFromToday(orderBy: CREATED_AT_DESC, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
     }
 }
 ```
 
 ### Get all alerts from last week:
 
-```
+```graphql
 query AllAlertsFromLastWeek {
-    allAlertsFromLastWeek(orderBy: CREATED_AT_DESC) {
-        category
-        date
-        location
-        title
+    allAlertsFromLastWeek(orderBy: CREATED_AT_DESC, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
     }
 }
 ```
 
 ### Get all alerts from last month:
 
-```
+```graphql
 query AllAlertsFromLastMonth {
-    allAlertsFromLastMonth(orderBy: CREATED_AT_DESC) {
-        category
-        date
-        location
-        title
+    allAlertsFromLastMonth(orderBy: CREATED_AT_DESC, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
     }
 }
 ```
 
 ### Get all alerts by date range:
 
-- Make sure to insert to date format like that: DD.MM.YYYY
+- Make sure to insert the date in the format: DD.MM.YYYY
 
-```
+```graphql
 query AllAlertsByDateRange($fromDateTime: DateTime, $toDateTime: DateTime) {
-    allAlertsByDateRange(dates: { fromDateTime: $fromDateTime, toDateTime: $toDateTime }) {
-        category
-        date
-        location
-        title
+    allAlertsByDateRange(dates: { fromDateTime: $fromDateTime, toDateTime: $toDateTime }, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
     }
 }
 ```
+
+## Pagination
+
+For all queries, pagination is supported using the `first` and `after` arguments. The `first` argument determines the number of items to return per page, and the `after` argument is used to paginate through the result set.
+
+- `first`: Specifies the number of items to return per page.
+- `after`: Indicates the cursor to start paginating from.
+
+## Filtering
+
+You can filter alerts based on their type using the `typeBy` argument. This allows you to retrieve alerts of specific types only. The available types are:
+
+- MISSILES
+- UAV_INTRUSION
+- EARTH_QUAKE
+- RADIO_LOGICAL_EVENT
+- TSUNAMI
+- HAZARDOUS_MATERIALS
+- TERRORIST_INFILTRATION
+- DRILL_MISSILES
+- DRILL_GENERAL
+- DRILL_EARTH_QUAKE
+- DRILL_RADIO_LOGICAL_EVENT
+- DRILL_TSUNAMI
+- DRILL_UAV_INTRUSION
+- DRILL_HAZARDOUS_MATERIALS
+- DRILL_TERRORIST_INFILTRATION
+
+Make sure to pass the desired type as an argument when querying for alerts.
 
 ## Contributing
 
