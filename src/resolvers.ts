@@ -2,64 +2,81 @@ import { alertsFromToday } from './utils/alerts-from-today';
 import { allAlertsFromLastWeek } from './utils/all-alerts-from-last-week';
 import { allAlertsFromLastMonth } from './utils/all-alerts-from-last-month';
 import { allAlertsByDateRange } from './utils/all-alerts-by-dates-range';
-import { Alert, OrderBy, Resolvers, QueryAllAlertsFromTodayArgs, QueryAllAlertsByDateRangeArgs, InputMaybe, AlertEdge, PageInfo, AlertConnection } from './resolvers-types';
+import {
+	Alert,
+	Resolvers,
+	QueryAllAlertsFromTodayArgs,
+	QueryAllAlertsByDateRangeArgs,
+	AlertEdge,
+	PageInfo,
+	AlertConnection,
+} from './resolvers-types';
 import { v4 as uuidv4 } from 'uuid';
+import { sortAlerts } from './helpers/sort-alerts';
+import { paginateAlerts } from './helpers/paginate-alerts';
+import { getCategoryFromType } from './helpers/get-category-from-type';
 
 export const resolvers: Resolvers = {
 	Query: {
-		allAlertsFromToday: async (_: any, { orderBy, first, after }: QueryAllAlertsFromTodayArgs): Promise<AlertConnection> => {
-			const alerts = await alertsFromToday() as Alert[];
+		allAlertsFromToday: async (_: any, { orderBy, typeBy, first, after }: QueryAllAlertsFromTodayArgs): Promise<AlertConnection> => {
+			let alerts = (await alertsFromToday()) as Alert[];
+
+			// Filter alerts based on typeBy if provided
+			if (typeBy) {
+				alerts = alerts.filter((alert) => alert.category === getCategoryFromType(typeBy));
+			}
+
 			const sortedAlerts = sortAlerts(alerts, orderBy);
 			const paginatedAlerts = paginateAlerts(sortedAlerts, first, after);
 
-			const edges: AlertEdge[] = paginatedAlerts.map(alert => ({ node: alert, cursor: uuidv4() }));
+			const edges: AlertEdge[] = paginatedAlerts.map((alert) => ({ node: alert, cursor: uuidv4() }));
 			const pageInfo: PageInfo = {
 				hasNextPage: edges.length > 0,
-				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null
+				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
 			};
 
 			return { edges, pageInfo };
 		},
 
 		allAlertsFromLastWeek: async (_: any, { orderBy, first, after }: QueryAllAlertsFromTodayArgs): Promise<AlertConnection> => {
-			const alerts = await allAlertsFromLastWeek() as Alert[];
+			const alerts = (await allAlertsFromLastWeek()) as Alert[];
 			const sortedAlerts = sortAlerts(alerts, orderBy);
 			const paginatedAlerts = paginateAlerts(sortedAlerts, first, after);
 
-			const edges: AlertEdge[] = paginatedAlerts.map(alert => ({ node: alert, cursor: uuidv4() }));
+			const edges: AlertEdge[] = paginatedAlerts.map((alert) => ({ node: alert, cursor: uuidv4() }));
 			const pageInfo: PageInfo = {
 				hasNextPage: edges.length > 0,
-				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null
+				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
 			};
 
 			return { edges, pageInfo };
 		},
 
 		allAlertsFromLastMonth: async (_: any, { orderBy, first, after }: QueryAllAlertsFromTodayArgs): Promise<AlertConnection> => {
-			const alerts = await allAlertsFromLastMonth() as Alert[];
+			const alerts = (await allAlertsFromLastMonth()) as Alert[];
 			const sortedAlerts = sortAlerts(alerts, orderBy);
 			const paginatedAlerts = paginateAlerts(sortedAlerts, first, after);
 
-			const edges: AlertEdge[] = paginatedAlerts.map(alert => ({ node: alert, cursor: uuidv4() }));
+			const edges: AlertEdge[] = paginatedAlerts.map((alert) => ({ node: alert, cursor: uuidv4() }));
 			const pageInfo: PageInfo = {
 				hasNextPage: edges.length > 0,
-				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null
+				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
 			};
 
 			return { edges, pageInfo };
 		},
 
 		allAlertsByDateRange: async (_: any, { dates, first, after }: QueryAllAlertsByDateRangeArgs): Promise<AlertConnection> => {
-			const alerts = await allAlertsByDateRange({
+			const alerts = (await allAlertsByDateRange({
 				from: dates.fromDateTime,
-				to: dates.toDateTime
-			}) as Alert[];
+				to: dates.toDateTime,
+			})) as Alert[];
 			const paginatedAlerts = paginateAlerts(alerts, first, after);
 
-			const edges: AlertEdge[] = paginatedAlerts.map(alert => ({ node: alert, cursor: uuidv4() }));
+			const edges: AlertEdge[] = paginatedAlerts.map((alert) => ({ node: alert, cursor: uuidv4() }));
 			const pageInfo: PageInfo = {
 				hasNextPage: edges.length > 0,
-				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null
+				endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
 			};
 
 			return { edges, pageInfo };
@@ -72,24 +89,3 @@ export const resolvers: Resolvers = {
 		category: (alert: any) => alert.category,
 	},
 };
-
-function sortAlerts(alerts: Alert[], orderBy: OrderBy): Alert[] {
-	if (orderBy === OrderBy.CreatedAtAsc) {
-		return alerts.sort((a, b) => new Date(a.alertDate).getTime() - new Date(b.alertDate).getTime());
-	} else if (orderBy === OrderBy.CreatedAtDesc) {
-		return alerts.sort((a, b) => new Date(b.alertDate).getTime() - new Date(a.alertDate).getTime());
-	} else {
-		return alerts;
-	}
-}
-
-function paginateAlerts(alerts: Alert[], first: InputMaybe<number> | undefined, after: InputMaybe<string> | undefined): Alert[] {
-	if (!first) {
-		return alerts;
-	}
-	const startIndex = after && typeof after !== 'undefined' && typeof after.valueOf() !== 'undefined' ? alerts.findIndex(alert => alert.id === after.valueOf()) + 1 : 0;
-	return alerts.slice(startIndex, startIndex + (first.valueOf() || 0));
-}
-
-
-

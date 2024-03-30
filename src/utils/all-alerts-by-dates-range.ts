@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql';
-import { formatDate } from './format-date';
+import { formatDate } from '../helpers/format-date';
 
 type AllAlertsByDateRangeProps = {
 	from: string;
