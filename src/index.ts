@@ -1,9 +1,13 @@
 import { createSchema, createYoga } from 'graphql-yoga';
 import { resolvers } from './resolvers';
+import { createInMemoryCache, useResponseCache } from '@graphql-yoga/plugin-response-cache';
 
 export interface Env {}
 
+const cache = createInMemoryCache()
+
 const yoga = createYoga<Env>({
+	graphqlEndpoint: '/graphql',
 	schema: createSchema({
 		typeDefs: /* GraphQL */ `
 			scalar DateTime
@@ -88,6 +92,22 @@ const yoga = createYoga<Env>({
 			}
 		`,
 	},
+	plugins: [
+		useResponseCache({
+			session: () => null,
+			cache,
+			ttl: 2_000,
+			ttlPerType: {
+			  User: 500
+			},
+			ttlPerSchemaCoordinate: {
+			  'Query.allAlertsFromToday': 10_000,
+			  'Query.allAlertsFromLastWeek': 10_000,
+			  'Query.allAlertsFromLastMonth': 10_000,
+			  'Query.allAlertsByDateRange': 10_000,
+			}
+		  })
+	  ],
 });
 
 export default {
