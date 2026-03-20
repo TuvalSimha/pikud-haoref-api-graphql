@@ -1,7 +1,13 @@
 name = "pikud-haoref-graphql-api"
 main = "src/index.ts"
 compatibility_date = "2024-03-20"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat_v2"]
+
+[vars]
+STELLATE_SERVICE_NAME = "pikud-haoref-api-graphql"
+
+# Note: Add your Stellate token as a secret, not here:
+# wrangler secret put STELLATE_TOKEN
 
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
