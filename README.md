@@ -10,15 +10,17 @@ You can interact with this API by sending GraphQL queries to the provided endpoi
 
 ## Endpoint
 
-Live Query URL: [https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql](https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql)
+Live Query URL: [https://pikud-haoref-api-graphql.stellate.sh/](https://pikud-haoref-api-graphql.stellate.sh/)
+
+This API is powered by [Stellate](https://stellate.co/), a GraphQL CDN that provides edge caching, analytics, and rate limiting for improved performance and reliability.
 
 ## Example Queries
 
-### Get all alerts from today:
+### Get alerts from today
 
 ```graphql
-query AllAlertsFromToday {
-    allAlertsFromToday(orderBy: CREATED_AT_DESC, first: 10) {
+query AlertsToday {
+    alerts(filter: { timeRange: TODAY }, first: 10) {
         edges {
             node {
                 category
@@ -32,15 +34,16 @@ query AllAlertsFromToday {
             hasNextPage
             endCursor
         }
+        totalCount
     }
 }
 ```
 
-### Get all alerts from last week:
+### Get alerts from last week
 
 ```graphql
-query AllAlertsFromLastWeek {
-    allAlertsFromLastWeek(orderBy: CREATED_AT_DESC, first: 10) {
+query AlertsLastWeek {
+    alerts(filter: { timeRange: LAST_WEEK, orderBy: CREATED_AT_DESC }, first: 10) {
         edges {
             node {
                 category
@@ -54,15 +57,16 @@ query AllAlertsFromLastWeek {
             hasNextPage
             endCursor
         }
+        totalCount
     }
 }
 ```
 
-### Get all alerts from last month:
+### Get alerts from last month
 
 ```graphql
-query AllAlertsFromLastMonth {
-    allAlertsFromLastMonth(orderBy: CREATED_AT_DESC, first: 10) {
+query AlertsLastMonth {
+    alerts(filter: { timeRange: LAST_MONTH }, first: 10) {
         edges {
             node {
                 category
@@ -76,17 +80,18 @@ query AllAlertsFromLastMonth {
             hasNextPage
             endCursor
         }
+        totalCount
     }
 }
 ```
 
-### Get all alerts by date range:
+### Get alerts by custom date range
 
-- Make sure to insert the date in the format: DD.MM.YYYY
+Date format: `DD/MM/YYYY`
 
 ```graphql
-query AllAlertsByDateRange($fromDateTime: DateTime, $toDateTime: DateTime) {
-    allAlertsByDateRange(dates: { fromDateTime: $fromDateTime, toDateTime: $toDateTime }, first: 10) {
+query AlertsByDateRange {
+    alerts(filter: { dateRange: { from: "01/01/2024", to: "31/01/2024" } }, first: 10) {
         edges {
             node {
                 category
@@ -100,38 +105,88 @@ query AllAlertsByDateRange($fromDateTime: DateTime, $toDateTime: DateTime) {
             hasNextPage
             endCursor
         }
+        totalCount
+    }
+}
+```
+
+### Filter by category and location
+
+```graphql
+query MissileAlertsInTelAviv {
+    alerts(
+        filter: {
+            timeRange: LAST_WEEK,
+            category: MISSILES,
+            location: "תל אביב"
+        },
+        first: 10
+    ) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+        }
+        totalCount
     }
 }
 ```
 
 ## Pagination
 
-For all queries, pagination is supported using the `first` and `after` arguments. The `first` argument determines the number of items to return per page, and the `after` argument is used to paginate through the result set.
+Pagination is supported using cursor-based pagination:
 
-- `first`: Specifies the number of items to return per page.
-- `after`: Indicates the cursor to start paginating from.
+- `first` - Number of items to return per page
+- `after` - Cursor to start paginating from (use `endCursor` from previous response)
+- `totalCount` - Returns the total number of alerts matching your filter (before pagination)
 
 ## Filtering
 
-You can filter alerts based on their type using the `typeBy` argument. This allows you to retrieve alerts of specific types only. The available types are:
+### Time Range
 
-- MISSILES
-- UAV_INTRUSION
-- EARTH_QUAKE
-- RADIO_LOGICAL_EVENT
-- TSUNAMI
-- HAZARDOUS_MATERIALS
-- TERRORIST_INFILTRATION
-- DRILL_MISSILES
-- DRILL_GENERAL
-- DRILL_EARTH_QUAKE
-- DRILL_RADIO_LOGICAL_EVENT
-- DRILL_TSUNAMI
-- DRILL_UAV_INTRUSION
-- DRILL_HAZARDOUS_MATERIALS
-- DRILL_TERRORIST_INFILTRATION
+Use the `timeRange` filter for predefined ranges:
+- `TODAY` - Alerts from today only
+- `LAST_WEEK` - Alerts from the last 7 days
+- `LAST_MONTH` - Alerts from the last 30 days
 
-Make sure to pass the desired type as an argument when querying for alerts.
+Or use `dateRange` with custom dates in `DD/MM/YYYY` format.
+
+### Category
+
+Filter by alert category using the `category` filter:
+
+- `MISSILES` - Missile and rocket alerts
+- `UAV_INTRUSION` - Drone intrusion
+- `EARTHQUAKE` - Earthquake warning
+- `RADIOLOGICAL_EVENT` - Radiological event
+- `TSUNAMI` - Tsunami warning
+- `HAZARDOUS_MATERIALS` - Hazardous materials incident
+- `TERRORIST_INFILTRATION` - Terrorist infiltration alert
+
+Drill categories:
+- `DRILL_MISSILES`
+- `DRILL_GENERAL`
+- `DRILL_EARTHQUAKE`
+- `DRILL_RADIOLOGICAL_EVENT`
+- `DRILL_TSUNAMI`
+- `DRILL_UAV_INTRUSION`
+- `DRILL_HAZARDOUS_MATERIALS`
+- `DRILL_TERRORIST_INFILTRATION`
+
+### Location
+
+Filter by location name using the `location` filter. Supports partial match and is case-insensitive.
+
+Example: `location: "תל אביב"` or `location: "חיפה"`
+
+### Sorting
+
+Use `orderBy` to sort results:
+- `CREATED_AT_DESC` - Newest first (default)
+- `CREATED_AT_ASC` - Oldest first
 
 ## Contributing
 
