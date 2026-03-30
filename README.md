@@ -10,9 +10,9 @@ You can interact with this API by sending GraphQL queries to the provided endpoi
 
 ## Endpoint
 
-Live Query URL: [https://pikud-haoref-api-graphql.stellate.sh/](https://pikud-haoref-api-graphql.stellate.sh/)
+Live Query URL: [https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql](https://pikud-haoref-graphql-api.tuval-simha.workers.dev/graphql)
 
-This API is powered by [Stellate](https://stellate.co/), a GraphQL CDN that provides edge caching, analytics, and rate limiting for improved performance and reliability.
+This API is powered by [Cloudflare Workers](https://workers.cloudflare.com/) for global edge deployment with low latency.
 
 ## Example Queries
 
@@ -185,8 +185,86 @@ Example: `location: "תל אביב"` or `location: "חיפה"`
 ### Sorting
 
 Use `orderBy` to sort results:
+
 - `CREATED_AT_DESC` - Newest first (default)
 - `CREATED_AT_ASC` - Oldest first
+
+## Legacy Queries (Deprecated)
+
+The following queries are still supported for backwards compatibility but are deprecated. Use the unified `alerts` query instead.
+
+### allAlertsFromToday
+
+```graphql
+query AllAlertsFromToday {
+    allAlertsFromToday(orderBy: CREATED_AT_DESC, typeBy: MISSILES, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+        }
+    }
+}
+```
+
+### allAlertsFromLastWeek
+
+```graphql
+query AllAlertsFromLastWeek {
+    allAlertsFromLastWeek(orderBy: CREATED_AT_DESC, typeBy: MISSILES, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+        }
+    }
+}
+```
+
+### allAlertsFromLastMonth
+
+```graphql
+query AllAlertsFromLastMonth {
+    allAlertsFromLastMonth(orderBy: CREATED_AT_DESC, first: 10) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+        }
+    }
+}
+```
+
+### allAlertsByDateRange
+
+Date format: `DD.MM.YYYY`
+
+```graphql
+query AllAlertsByDateRange {
+    allAlertsByDateRange(
+        dates: { fromDateTime: "01.01.2024", toDateTime: "31.01.2024" },
+        first: 10
+    ) {
+        edges {
+            node {
+                category
+                date
+                location
+                title
+            }
+        }
+    }
+}
+```
 
 ## Contributing
 

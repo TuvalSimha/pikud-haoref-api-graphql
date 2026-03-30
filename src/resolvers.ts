@@ -4,15 +4,7 @@ import { allAlertsFromLastMonth } from './utils/all-alerts-from-last-month';
 import { allAlertsByDateRange } from './utils/all-alerts-by-dates-range';
 import { Resolvers, AlertCategory, AlertConnection } from './resolvers-types';
 import { getCategoryFromType, getTypeFromCategoryId } from './helpers/get-category-from-type';
-
-// Raw alert from the API
-interface RawAlert {
-	alertDate: string;
-	title?: string;
-	category_desc?: string;
-	data: string;
-	category: number;
-}
+import { RawAlert } from './types';
 
 // Filter alerts by category
 function filterByCategory(alerts: RawAlert[], category: string | null | undefined): RawAlert[] {
